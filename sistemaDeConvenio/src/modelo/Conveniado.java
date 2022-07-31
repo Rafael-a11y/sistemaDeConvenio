@@ -13,8 +13,8 @@ import javax.persistence.Table;
 
 @Entity @Table(name = "conveniados") @DiscriminatorValue("FC") public class Conveniado extends Funcionario
 {
-	@Column(name = "Convênio's", nullable = false) private String nomeConvenio;
-	@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "titular") private List<Dependente> dependentes;
+	@Column(name = "Convênio", nullable = false) private String nomeConvenio;
+	@OneToMany(mappedBy = "titular", cascade = CascadeType.REMOVE) private List<Dependente> dependentes;
 	
 	public Conveniado() {}
 	public Conveniado(String nomeConvenio) 

@@ -1,19 +1,19 @@
 package modelo;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity @Table(name = "dependentes") public class Dependente
 {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)	private Long id;
-	@Column(name = "nome's", nullable = false)	private String nome;
-	@Column(name = "idade's", nullable = false) private int idade;
+	@Column(name = "nome", nullable = false)	private String nome;
+	@Column(name = "idade", nullable = false) private int idade;
 	DocumentosPessoais documentos;
 	@ManyToOne private Conveniado titular;
 	
@@ -23,7 +23,8 @@ import javax.persistence.Table;
 		super();
 		this.nome = nome;
 		this.idade = idade;
-	  	this.titular = titular;
+		this.documentos = documentos;
+		this.titular = titular;
 	}
 	public Long getId() {
 		return id;

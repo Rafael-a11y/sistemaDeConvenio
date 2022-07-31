@@ -126,7 +126,7 @@ public class DAO <E>
 	* Obtem um objeto do banco de dados pelo id, o método public E find(Class<E> argumento1, Object argumento2) faz uma consulta do tipo where, por isso é recomendável usar
 	* um id como parâmetro, mas o método aceita qualquer Object como segundo parâmetro. O Class<E> deve estar mapeado no persistence.xml e é usado para se saber qual o 
 	* tipo de objeto que será recuperado no banco de dados*/
-	public E obterPorId(Object id)
+	public E obterPorId(Long id)
 	{
 		return em.find(classe, id);
 	}

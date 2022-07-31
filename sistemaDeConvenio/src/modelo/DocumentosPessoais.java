@@ -1,12 +1,12 @@
 package modelo;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+	import javax.persistence.Column;
+	import javax.persistence.Embeddable;
 
 @Embeddable public class DocumentosPessoais {
 
-	@Column(name = "CPF's", unique = true, nullable = false) private String cpf;
-	@Column(name = "RG's", unique = true, nullable = false) private String rg;
+	@Column(name = "CPF", unique = true, nullable = false) private String cpf;
+	@Column(name = "RG", unique = true, nullable = false) private String rg;
 	
 	public DocumentosPessoais() {}
 

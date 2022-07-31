@@ -5,8 +5,8 @@ import javax.persistence.Embeddable;
 
 @Embeddable public class Endereco 
 {
-	@Column(name = "Cidade's", unique= true, nullable = false)	private String cidade;
-	@Column(name = "CEP's", unique= true, nullable = false)	private String cep;
+	@Column(name = "Cidade", unique= true, nullable = false)	private String cidade;
+	@Column(name = "CEP", unique= true, nullable = false)	private String cep;
 	
 	public Endereco() {}
 	
