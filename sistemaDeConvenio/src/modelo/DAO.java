@@ -1,12 +1,11 @@
 package modelo;
 
-	import java.util.List;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.swing.JOptionPane;
 
@@ -112,6 +111,23 @@ public class DAO <E>
 		}
 		String jpql = "select e from " + classe.getName() + " e";
 		TypedQuery<E> query = em.createQuery(jpql, classe);
+		return query.getResultList();
+	}
+	
+	public List<E> consultar(String consulta, Object... params)
+	{
+		TypedQuery<E> query = em.createNamedQuery(consulta, classe);
+		for(int i = 0; i < params.length; i = i + 2)
+		{
+		query.setParameter(params[i].toString(), params[i + 1]);
+		}
+		return query.getResultList();
+	}
+	
+	public List<E> getEmployeeByName(String nome)
+	{
+		TypedQuery<E> query = em.createQuery("select f from Funcionario f where f.nome like :nomeParametro", classe);
+		query.setParameter("nomeParametro", "%" + nome + "%");
 		return query.getResultList();
 	}
 	
