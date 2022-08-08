@@ -114,12 +114,34 @@ public class DAO <E>
 		return query.getResultList();
 	}
 	
-	public List<E> consultar(String consulta, Object... params)
+	public List<E> getEmployeeByNameWithNamedQuery(String consulta, Object... params)
 	{
 		TypedQuery<E> query = em.createNamedQuery(consulta, classe);
 		for(int i = 0; i < params.length; i = i + 2)
 		{
-		query.setParameter(params[i].toString(), params[i + 1]);
+		query.setParameter(params[i].toString(), params[i + 1].toString() + "%");
+		}
+		return query.getResultList();
+	}
+	
+	public E consultarUm(String consulta, Object... parametros)
+	{
+		List<E> lista = this.consultar(consulta, parametros);
+		return lista.isEmpty() ? null : lista.get(0);
+	}
+	
+	/*Repare que neste método, temos entre parêntes Object... parametros, isso significa que quando este método for chamado, além de uma String representando a consulta,
+	 * também irá receber uma quantidade indefinida de parâmetros Object, se é indefinido então pode ser de qualquer quantidade, inclusive nenhum parâmetro após a String,
+	 * fiz este método desta maneira pois dependendo da consulta, posso precisar de parâmetros de tipos diferentess, mas não necessariamente serão objetos do tipo Object.
+	 * Também é imprtante falar do método TypedQuery setParameter(String arg0, Object arg1), o primeiro argumento em String se refere ao parâmetro declarado na consulta jpql
+	 * enquanto o segundo argumento será o valor que o parâmetro declarado na consulta jpql irá assumir. Isso acontece porque uma consulta jpql pode ter vários parâmetros
+	 * declarados, então é preciso especificar o valor de todos um por um.*/
+	public List<E> consultar(String consulta, Object... parametros)
+	{
+		TypedQuery<E> query = em.createNamedQuery(consulta, classe);
+		for(int i = 0; i< parametros.length; i = i + 2)
+		{
+			query.setParameter(parametros[i].toString(), parametros[i + 2]);
 		}
 		return query.getResultList();
 	}
@@ -130,7 +152,7 @@ public class DAO <E>
 		query.setParameter("nomeParametro", "%" + nome + "%");
 		return query.getResultList();
 	}
-	
+		
 	public void fecharEntityManager()
 	{
 		em.close();

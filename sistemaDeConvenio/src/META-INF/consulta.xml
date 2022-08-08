@@ -2,38 +2,35 @@
 <entity-mappings version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd">
-
-	<named-query name="obterDependentesDoTitularDeIdIgualA">
 	
+	<!--A tag <named-query> serve para a criação de uma consulta que terá um nome e poderá ser chamada, assim caso você precise fazer essa mesma consulta várias vezes, não
+	irá precisar reescrevê-la várias vezes para servir de parâmetro para criar as TypedQuery's. A consulta é feita com JPQL-->
+	<named-query name="getEmployeeByName">
 		<query>
-		<!--Um comando em JPQL que será transformado em SQL, o comando seleciona os registros que possuem nota maior que o
-			atributo nota que será verificado o valor em tempo de execução. O atributo name da tag deve ser preenchido pois é
-			este nome que será usado pelo método Entity Manager createNamedQuery(String nomeConsulta, Class<E> class).
-			O documento consultas.xml deve ser registrado no arquivo persistence.xml dentro da tag 
-			<mapping-file></mapping-file> que deve conter o caminho deste arquivo. o "join fetch f.atores" serve para a consulta
-			serve para puxar a List de entidades Ator nos resultados. -->
-			select d from Dependente d where d.titular.id : id
-		
+		<!---->
+			select f from Funcionario f where f.nome like :nomeParametro
 		</query>
-	
 	</named-query>
 	
-	<!--Vamos fazer agora uma consulta nativa em SQL, primeiro devemos definir a tag <sql-result-set-mapping> com um nome,
-		com a classe alvo (target-class0, e com o atributo que irá receber o resultado da consulta SQL usando a tag <column>
-		que tem nome (name), e tipo (class) que é o tipo do atributo. Ou seja, a tag <sql-result-set-mapping> mapeia a classe
-		alvo, após apontar o nome da tag <sql-result-set-mapping>, criamos uma tag <query> com o comando SQL nativo-->
-	<named-native-query name="obterMediaGeralDosFilmes" result-set-mapping="NotaFilmeMap">
+	
+	<!--Definindo uma consulta nativa em sql, o atributo result-set-mapping deve apontar para o mapeamento correto preenchendo o atributo com o nome da tag de mapeamento,
+	neste caso a tag <sql-result-set-mapping>. A diferença entre <named-query> e <named-native-query> é que esta última usa sql e precisa ser mapeada para uma classe que irá
+	receber o resultado da consulta. Isso acontece porque nem toda classe precisa ser uma entidade, algumas vezes, ter uma classe para guardar resultados de consulta é bem
+	útil para a criação de relatórios. -->
+	<named-native-query name="obterQuantidadeFuncionarios" result-set-mapping="quantidadeFuncionariosMap">
+	<!--A tag <query> serve para guardar a query propriamente dita-->
 		<query>
-			select avg(nota) as media from filmes
+			select count(id) as quantidadeFuncionarios from funcionarios
 		</query>
 	</named-native-query>
-	
-	<!--A tag <constructor-result> constrói um construtor para a classe alvo definida em target-class, a tag <column> serve para definir os parâmetros do construtor.
-		O nome da coluna se refere ao alias usado na consulta SQL. Os tipos apontados tanto no  <column> quanto no atributo da classe apropriada devem equivaler. -->
-	<sql-result-set-mapping name="NotaFilmeMap">
-		<constructor-result target-class="modelo.consulta.NotaFilme">
-			<column name="media" class="java.lang.Double"/>
+
+	<!--Definindo o mapeamento-->
+	<sql-result-set-mapping name="quantidadeFuncionariosMap">
+	<!--Definindo a classe alvo que guarduará o retorno da consulta nativa em sql-->
+		<constructor-result target-class="modelo.QuantidadeFuncionarios">
+		<!--O valor do atributo name deve ser o nome da coluna ou do alias, e o tipo deve ser o mesmo do atributo na classe java mapeada, no caso: java.lang.Integer-->
+			<column name="quantidadeFuncionarios" class="java.lang.Integer" /> 
 		</constructor-result>
 	</sql-result-set-mapping>
-
+	
 </entity-mappings>
